@@ -13,13 +13,13 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Command\Command;
 
-class RunCommand
+class WorkCommand
     extends ContainerAwareCommand
 {
     protected function configure()
     {
         $this
-            ->setName('dtc:queue_worker:run')
+            ->setName('dtc:queue_worker:work')
             ->addArgument('worker_name', InputArgument::OPTIONAL, 'Name of worker')
             ->addArgument('method', InputArgument::OPTIONAL, 'DI method of worker')
             ->addOption('total_jobs', 't', InputOption::VALUE_REQUIRED,
