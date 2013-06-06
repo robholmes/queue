@@ -5,7 +5,7 @@ use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
 use Dtc\QueueBundle\Model\Job as BaseJob;
 
 /**
- * @ODM\Document(db="queue", collection="job")
+ * @ODM\Document(collection="job")
  * @ODM\Index(keys={"className"="asc"})
  */
 class Job
