@@ -45,7 +45,7 @@ class WorkCommand
         gc_enable();
 
         try {
-            $output->writeln("<info>Staring up a new job...</info>");
+            $output->writeln(date('Y-m-d H:i:s - ')."<info>Staring up a new job...</info>");
             $currentJob = 1;
 
             do {
@@ -57,25 +57,25 @@ class WorkCommand
                     $currentJob++;
                 }
                 else {
-                    $output->writeln("<info>No job to run... sleeping</info>");
-                    sleep(15);        // Sleep for 10 seconds when out of job
+                    $output->writeln(date('Y-m-d H:i:s - ')."<info>No job to run... sleeping</info>");
+                    sleep(15);        // Sleep for 15 seconds when out of job
                 }
             } while ($currentJob <= $totalJobs);
         } catch (\Exception $e) {
             // Uncaught error: possibly with QueueBundle itself
             if ($msg = $e->getMessage()) {
-                $output->writeln('<error>[critical]</error> '.$msg);
+                $output->writeln(date('Y-m-d H:i:s - ').'<error>[critical]</error> '.$msg);
             }
         }
     }
 
     protected function reportJob(Job $job, OutputInterface $output) {
         if ($job->getStatus() == Job::STATUS_ERROR) {
-            $output->writeln("<error>[error]</error>  Error with job id: {$job->getId()}");
-            $output->writeln($job->getMessage());
+            $output->writeln(date('Y-m-d H:i:s - ')."<error>[error]</error>  Error with job id: {$job->getId()}");
+            $output->writeln(date('Y-m-d H:i:s - ').$job->getMessage());
         }
 
         $message = "Finished job id: {$job->getId()} in {$job->getElapsed()} seconds\n";
-        $output->writeln("<info>{$message}</info>");
+        $output->writeln(date('Y-m-d H:i:s - ')."<info>{$message}</info>");
     }
 }
