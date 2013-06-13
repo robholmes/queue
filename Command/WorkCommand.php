@@ -44,10 +44,10 @@ class WorkCommand
         set_time_limit($processTimeout);    // Set an hour timeout
         gc_enable();
 
-        try {
-            $output->writeln(date('Y-m-d H:i:s - ')."<info>Staring up a new job...</info>");
-            $currentJob = 1;
+        $output->writeln(date('Y-m-d H:i:s - ')."<info>Starting up a new worker...</info>");
+        $currentJob = 1;
 
+        try {
             do {
                 $job = $workerManager->run($workerName, $methodName);
 
@@ -63,10 +63,10 @@ class WorkCommand
             } while ($currentJob <= $totalJobs);
         } catch (\Exception $e) {
             // Uncaught error: possibly with QueueBundle itself
-            if ($msg = $e->getMessage()) {
-                $output->writeln(date('Y-m-d H:i:s - ').'<error>[critical]</error> '.$msg);
-            }
+            $output->writeln(date('Y-m-d H:i:s - ').'<error>[critical]</error> '.$e->getMessage());
         }
+
+        $output->writeln(date('Y-m-d H:i:s - ')."<info>Ending worker with job count of ".$currentJob."...</info>");
     }
 
     protected function reportJob(Job $job, OutputInterface $output) {
