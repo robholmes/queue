@@ -72,5 +72,36 @@ abstract class Worker
         return $this->at($time, true, $priority);
     }
 
+    /**
+     * @param int $delay seconds delay before first job
+     * @param string $interval The interval to repeat after ready for a \DateInterval constructor
+     * @param mixed $priority
+     * @return Job
+     */
+    public function repeatLater($delay = 0, $interval = "PT1M", $priority = null)
+    {
+        $job = $this->at(time() + $delay, false, $priority);
+        /* @var $job Job */
+        $job->setDelay($delay);
+        $job->setRepeating(true);
+        $job->setInterval($interval);
+        return $job;
+    }
+
+    /**
+     * @param int $time The time to start first job
+     * @param string $interval The interval to repeat after ready for a \DateInterval constructor
+     * @param mixed $priority
+     * @return Job
+     */
+    public function repeatAt($time = null, $interval = "PT1M", $priority = null)
+    {
+        $job = $this->at($time, false, $priority);
+        /* @var $job Job */
+        $job->setRepeating(true);
+        $job->setInterval($interval);
+        return $job;
+    }
+
     abstract function getName();
 }

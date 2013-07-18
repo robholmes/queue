@@ -52,6 +52,12 @@ class Job
     protected $locked;
 
     /**
+     * @ODM\Field(type="date")
+     * @ODM\Index(unique=false, order="asc")
+     */
+    protected $lockedAt;
+
+    /**
      * @ODM\Field(type="int")
      * @ODM\Index(unique=false, order="asc")
      */
@@ -67,6 +73,16 @@ class Job
      * @ODM\Index(unique=false, order="asc")
      */
     protected $when;
+
+    /**
+     * @ODM\Field(type="string")
+     */
+    protected $interval;
+
+    /**
+     * @ODM\Field(type="boolean")
+     */
+    protected $repeating;
 
     /**
      * When the job get started

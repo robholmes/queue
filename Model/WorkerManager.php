@@ -54,6 +54,8 @@ class WorkerManager
 	}
 
 	public function runJob(Job $job) {
+        $nextRunWhen = new \DateTime();
+
 		try {
 			$start = microtime(true);
 			$worker = $this->getWorker($job->getWorkerName());
@@ -80,10 +82,20 @@ class WorkerManager
 		$elapsed = microtime(true) - $start;
 		$job->setElapsed($elapsed);
 
-		if ($this->logger) {
-			$this->logger->debug("Finished: {$job->getClassName()}->{$job->getMethod()} in {$elapsed} micro-seconds");
-			$this->logger->debug("Save job history: {$job->getId()}");
-		}
+        if ($this->logger) {
+            $this->logger->debug("Finished: {$job->getClassName()}->{$job->getMethod()} in {$elapsed} micro-seconds");
+            $this->logger->debug("Save job history: {$job->getId()}");
+        }
+
+        if ($job->getRepeating()) {
+            // Repeating job so reset fields necessary to run again
+            $job->setStatus(Job::STATUS_NEW);
+            $job->setLocked(null);
+            $job->setLockedAt(null);
+            // Setup next time to run
+            $nextRunWhen->add(new \DateInterval($job->getInterval()));
+            $job->setWhen($nextRunWhen);
+        }
 
 		$this->jobManager->saveHistory($job);
 

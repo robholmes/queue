@@ -27,6 +27,8 @@ class Job
     protected $updatedAt;
     protected $delay;
     protected $elapsed;
+    protected $interval;
+    protected $repeating;
 
     protected $jobManager;
 
@@ -397,5 +399,37 @@ class Job
 	public function setElapsed($elapsed)
 	{
 		$this->elapsed = $elapsed;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getInterval()
+	{
+		return $this->interval;
+	}
+
+	/**
+	 * @param string $interval
+	 */
+	public function setInterval($interval)
+	{
+		$this->interval = $interval;
+	}
+
+	/**
+	 * @return boolean
+	 */
+	public function getRepeating()
+	{
+		return $this->repeating;
+	}
+
+	/**
+	 * @param boolean $repeating
+	 */
+	public function setRepeating($repeating)
+	{
+		$this->repeating = $repeating;
 	}
 }

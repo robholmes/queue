@@ -111,7 +111,11 @@ class JobManager
         // Run a map reduce function get worker and status break down
         $mapFunc = "function() {
             var result = {};
-            result[this.status] = 1;
+            if (this.repeating) {
+                result['repeating'] = 1;
+            } else {
+                result[this.status] = 1;
+            }
             var key = this.worker_name + '->' + this.method + '()';
             emit(key, result);
         }";
