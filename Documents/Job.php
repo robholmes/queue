@@ -28,11 +28,13 @@ class Job
 
     /**
      * @ODM\Field(type="string")
+     * @ODM\Index(unique=false, order="asc")
      */
     protected $method;
 
     /**
      * @ODM\Field(type="string")
+     * @ODM\Index(unique=false, order="asc")
      */
     protected $status;
 
@@ -48,6 +50,7 @@ class Job
 
     /**
      * @ODM\Field(type="boolean")
+     * @ODM\Index(unique=false, order="asc")
      */
     protected $locked;
 
@@ -81,6 +84,7 @@ class Job
 
     /**
      * @ODM\Field(type="boolean")
+     * @ODM\Index(unique=false, order="asc")
      */
     protected $repeating;
 
