@@ -183,6 +183,7 @@ class JobManager
 
         if ($prioritize) {
             $qb->sort('priority', 'asc');
+            $qb->sort('when', 'asc');
         }
         else {
             $qb->sort('when', 'asc');
