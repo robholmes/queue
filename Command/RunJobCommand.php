@@ -56,13 +56,15 @@ class RunJobCommand
 
                 if ($job->getStatus() == Job::STATUS_ERROR) {
 	                $output->writeln("Error:");
-	                $output->writeln("<error>{$job->getMessage()}</error>" );
+	                $output->writeln("<error>{$job->getMessage()}</error>");
 	                $output->writeln("\n");
+                    $logger->error('[error]: '.$job->getMessage());
                 }
             }
         } catch (\Exception $e) {
             if ($msg = $e->getMessage()) {
                 $output->writeln('<error>[error]</error> '.$msg);
+                $logger->error('[error]: '.$msg."\n".$e->getTraceAsString());
             }
         }
 

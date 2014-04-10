@@ -6,6 +6,7 @@ use Dtc\QueueBundle\Model\Job;
 use Asc\PlatformBundle\Documents\Profile\UserProfile;
 use Asc\PlatformBundle\Documents\UserAuth;
 
+use Monolog\Logger;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -38,6 +39,7 @@ class WorkCommand
         $methodName = $input->getArgument('method');
         $totalJobs = $input->getOption('total_jobs', 1);
         $logger = $container->get('monolog.logger.dtc_queue');
+        /* @var $logger Logger */
         $processTimeout = $input->getOption('timeout', 3600);
 
         // Check to see if there are other instances
@@ -64,6 +66,7 @@ class WorkCommand
         } catch (\Exception $e) {
             // Uncaught error: possibly with QueueBundle itself
             $output->writeln(date('Y-m-d H:i:s - ').'<error>[critical]</error> '.$e->getMessage());
+            $logger->critical('[critical]: '.$e->getMessage()."\n".$e->getTraceAsString());
         }
 
         $output->writeln(date('Y-m-d H:i:s - ')."<info>Ending worker with job count of ".$currentJob."...</info>");
@@ -73,6 +76,10 @@ class WorkCommand
         if ($job->getStatus() == Job::STATUS_ERROR) {
             $output->writeln(date('Y-m-d H:i:s - ')."<error>[error]</error>  Error with job id: {$job->getId()}");
             $output->writeln(date('Y-m-d H:i:s - ').$job->getMessage());
+
+            $logger = $this->getContainer()->get('monolog.logger.dtc_queue');
+            /* @var $logger Logger */
+            $logger->error('[error]: "'.$job->getWorkerName().'" with: '.$job->getMessage());
         }
 
         $message = "Finished job id: {$job->getId()} in {$job->getElapsed()} seconds\n";
