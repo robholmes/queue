@@ -66,7 +66,7 @@ class WorkCommand
         } catch (\Exception $e) {
             // Uncaught error: possibly with QueueBundle itself
             $output->writeln(date('Y-m-d H:i:s - ').'<error>[critical]</error> '.$e->getMessage());
-            $logger->critical('[critical]: '.$e->getMessage()."\n".$e->getTraceAsString());
+            $logger->error('[critical]: '.$e->getMessage()."\n".$e->getTraceAsString());
         }
 
         $output->writeln(date('Y-m-d H:i:s - ')."<info>Ending worker with job count of ".$currentJob."...</info>");
