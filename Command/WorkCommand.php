@@ -27,6 +27,8 @@ class WorkCommand
                     'Total number of job to work on before exiting', 1)
             ->addOption('timeout', 'to', InputOption::VALUE_REQUIRED,
                     'Process timeout in seconds', 3600)
+            ->addOption('sleep_for', null, InputOption::VALUE_REQUIRED,
+                    'Process sleep in seconds between each job', 15)
             ->setDescription('Start up a job in queue')
         ;
     }
@@ -40,7 +42,8 @@ class WorkCommand
         $totalJobs = $input->getOption('total_jobs', 1);
         $logger = $container->get('monolog.logger.dtc_queue');
         /* @var $logger Logger */
-        $processTimeout = $input->getOption('timeout', 3600);
+        $processTimeout = $input->getOption('timeout');
+        $processSleepFor = $input->getOption('sleep_for');
 
         // Check to see if there are other instances
         set_time_limit($processTimeout);    // Set an hour timeout
@@ -59,8 +62,8 @@ class WorkCommand
                     $currentJob++;
                 }
                 else {
-                    $output->writeln(date('Y-m-d H:i:s - ')."<info>No job to run...</info>");
-                    return;
+                    $output->writeln(date('Y-m-d H:i:s - ')."<info>No job to run... (sleeping for ".$processSleepFor.")</info>");
+                    if ($processSleepFor > 0) sleep($processSleepFor);
                 }
             } while ($currentJob <= $totalJobs);
         } catch (\Exception $e) {
