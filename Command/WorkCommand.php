@@ -42,8 +42,8 @@ class WorkCommand
         $totalJobs = $input->getOption('total_jobs', 1);
         $logger = $container->get('monolog.logger.dtc_queue');
         /* @var $logger Logger */
-        $processTimeout = $input->getOption('timeout');
-        $processSleepFor = $input->getOption('sleep_for');
+        $processTimeout = (int) $input->getOption('timeout');
+        $processSleepFor = (int) $input->getOption('sleep_for');
 
         // Check to see if there are other instances
         set_time_limit($processTimeout);    // Set an hour timeout
