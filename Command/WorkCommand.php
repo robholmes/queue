@@ -59,8 +59,8 @@ class WorkCommand
                     $currentJob++;
                 }
                 else {
-                    $output->writeln(date('Y-m-d H:i:s - ')."<info>No job to run... sleeping</info>");
-                    sleep(15);        // Sleep for 15 seconds when out of job
+                    $output->writeln(date('Y-m-d H:i:s - ')."<info>No job to run...</info>");
+                    return;
                 }
             } while ($currentJob <= $totalJobs);
         } catch (\Exception $e) {
