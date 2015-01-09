@@ -18,6 +18,7 @@ class Job
 
     /**
      * @ODM\Field(type="string", name="worker_name")
+     * @ODM\Index(unique=false, order="asc")
      */
     protected $workerName;
 
